@@ -1,0 +1,37 @@
+# https://taskfile.dev
+version: "3"
+
+tasks:
+  build:
+    desc: "Build the provider binary"
+    cmds:
+      - go build -o terraform-provider-ldap
+    sources:
+      - "**/*.go"
+      - go.mod
+      - go.sum
+    generates:
+      - terraform-provider-ldap
+
+
+  install-tfplugindocs:
+    desc: "Install the tfplugindocs tool"
+    cmds:
+      - go install github.com/hashicorp/terraform-plugin-docs/cmd/tfplugindocs@v0.7.0
+    status:
+      - which staticcheck
+
+  docs:
+    desc: "Update the docs generated from description fields"
+    deps:
+      - install-tfplugindocs
+    cmds:
+      - tfplugindocs
+    sources:
+      - "internal/**/*.go"
+      - "main.go"
+      - "examples/**/*.tf"
+    generates:
+      - docs/**/*.md
+
+

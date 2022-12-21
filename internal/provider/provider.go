@@ -51,6 +51,13 @@ func Provider() *schema.Provider {
 				DefaultFunc: schema.EnvDefaultFunc("LDAP_TLS_INSECURE", false),
 				Description: "Don't verify server TLS certificate (default: false).",
 			},
+			"skip_attributes": {
+				Type:     schema.TypeSet,
+				Elem:     &schema.Schema{Type: schema.TypeString},
+				Optional: true,
+				Description: "An optional list, of globally skipped attributes which are fetched during read." +
+					"It does *NOT* influence update or create operations, so you may still create or manipulate",
+			},
 		},
 
 		ResourcesMap: map[string]*schema.Resource{
@@ -61,7 +68,14 @@ func Provider() *schema.Provider {
 	}
 }
 
+// ListOfAttributesToSkip -> A set of string values, that are being searched and skipped if any found
+// Upon read function. It is set globally, as it does not make sense to skip some attributes over some resources.
+// #YOLO
+var ListOfAttributesToSkip []interface{}
+
 func configureProvider(d *schema.ResourceData) (interface{}, error) {
+	ListOfAttributesToSkip = d.Get("skip_attributes").(*schema.Set).List()
+
 	config := &client.Config{
 		LDAPHost:     d.Get("ldap_host").(string),
 		LDAPPort:     d.Get("ldap_port").(int),

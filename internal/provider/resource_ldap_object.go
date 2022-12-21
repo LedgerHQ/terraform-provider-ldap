@@ -295,6 +295,15 @@ func resourceLDAPObjectDelete(d *schema.ResourceData, meta interface{}) error {
 	return nil
 }
 
+func stringInSlice(a string, list []interface{}) bool {
+	for _, b := range list {
+		if b == a {
+			return true
+		}
+	}
+	return false
+}
+
 func readLDAPObjectImpl(d *schema.ResourceData, meta interface{}, updateState bool) error {
 	client := meta.(*ldap.Conn)
 	dn := d.Get("dn").(string)
@@ -347,6 +356,12 @@ func readLDAPObjectImpl(d *schema.ResourceData, meta interface{}, updateState bo
 			log.Printf("[DEBUG] ldap_object::read - skipping attribute %q of %q", attribute.Name, dn)
 			continue
 		}
+
+		if stringInSlice(attribute.Name, ListOfAttributesToSkip) {
+			log.Printf("[DEBUG] ldap_object::read - skipping attribute as referenced %q of %q", attribute.Name, dn)
+			continue
+		}
+
 		if len(attribute.Values) == 1 {
 			// we don't treat the RDN as an ordinary attribute
 			a := fmt.Sprintf("%s=%s", attribute.Name, attribute.Values[0])

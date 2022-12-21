@@ -1,5 +1,7 @@
-# Terraform LDAP
-
+# Terraform LDAP 
+```text
+The only major difference from forked verison, is that within this fork, you can list what attributes within the object provider will skip reading.
+```
 ## Installation
 
 You can easily install the latest version with the following:
