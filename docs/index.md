@@ -15,7 +15,7 @@ The LDAP provider provides resources to interact with a LDAP object.
 terraform {
   required_providers {
     ldap = {
-      source  = "elastic-infra/ldap"
+      source  = "memdealer/ldap"
       version = "~> 2.0"
     }
   }
@@ -45,3 +45,4 @@ provider "ldap" {
 - **start_tls** (Boolean) Upgrade TLS to secure the connection (default: false).
 - **tls** (Boolean) Enable TLS encryption for LDAP (LDAPS) (default: false).
 - **tls_insecure** (Boolean) Don't verify server TLS certificate (default: false).
+- **skip_attributes** (List) List of attributes to skip upon reading
