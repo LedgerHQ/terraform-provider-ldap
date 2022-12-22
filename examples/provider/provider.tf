@@ -12,4 +12,5 @@ provider "ldap" {
   ldap_port     = 389
   bind_user     = "cn=admin,dc=example,dc=com"
   bind_password = "admin"
+  skip_attributes = ["userPassword"]
 }

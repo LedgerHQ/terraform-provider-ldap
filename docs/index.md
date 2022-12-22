@@ -2,7 +2,7 @@
 page_title: "LDAP Provider"
 subcategory: ""
 description: |-
-  The LDAP provider provides resources to interact with a LDAP object.
+  The LDAP provider provides resources to interact with a LDAP object with ability to skip attributes globaly, by need.
 ---
 
 # LDAP Provider
@@ -26,6 +26,7 @@ provider "ldap" {
   ldap_port     = 389
   bind_user     = "cn=admin,dc=example,dc=com"
   bind_password = "admin"
+  skip_attributes = ["userPassword"] # Here you can list attribute names, that you want to ommit from reading. Such as constantly changing attributes.
 }
 ```
 
